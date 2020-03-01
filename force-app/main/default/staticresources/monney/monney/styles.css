@@ -1,0 +1,7 @@
+header.flexipageHeader.slds-page-header.uiBlock.oneAnchorHeader { 
+    display: none;
+}
+.monney-home-container {
+    background-color: white;
+    height: 80vh;
+}
