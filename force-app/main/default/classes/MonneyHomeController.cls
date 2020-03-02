@@ -1,24 +1,22 @@
 public with sharing class MonneyHomeController {
-	public MonneyHomeController() {
-	}
+
 	@AuraEnabled
-	public static String getMonneyUser(Id userId) {
-		Monney_User__c currentMonneyUser = getCurrentMonneyUser(userId);
+	public static String getCurrentMonneyUser(Id userId) {
+		Monney_User__c currentMonneyUser = getMonneyUserByUserId(userId);
 		List<Expense_Category__c> monneyUserCategoriesWithExpenses = getMonneyUserCategoriesWithExpenses(currentMonneyUser.Id);
+		MonneyUserData monneyUserData = buildMonneyUserData(currentMonneyUser, monneyUserCategoriesWithExpenses);
 
-		MonneyUserData monneyUserDataObject = buildMonneyUserDataObject(currentMonneyUser, monneyUserCategoriesWithExpenses);
-		System.debug('---> monneyUserDataObject  ' + monneyUserDataObject);
-		return JSON.serialize(monneyUserDataObject);
+		return JSON.serialize(monneyUserData);
 	}
 
-	public static Monney_User__c getCurrentMonneyUser(Id userId) {
-		List<Monney_User__c> monneyUsersById = MonneyUserDAO.getMonneyUserById(userId);
+	public static Monney_User__c getMonneyUserByUserId(Id userId) {
+		List<Monney_User__c> monneyUsersByUserId = MonneyUserDAO.getMonneyUserByUserId(userId);
 		Monney_User__c currentUser = new Monney_User__c();
 
-		if(monneyUsersById.isEmpty()) {
-			currentUser = MonneyUserDAO.createMonneyUser(userId);
+		if(monneyUsersByUserId.isEmpty()) {
+			currentUser = MonneyUserDAO.createMonneyUser(userId) [0];
 		} else {
-			currentUser = monneyUsersById [0];
+			currentUser = monneyUsersByUserId [0];
 		}
 
 		return currentUser;
@@ -42,11 +40,12 @@ public with sharing class MonneyHomeController {
 		return categoriesWithExpensesToBuildWrapper;
 	}
 
-	public static MonneyUserData buildMonneyUserDataObject(Monney_User__c monneyUser, List<Expense_Category__c> userCategoriesWithExpenses) {
+	public static MonneyUserData buildMonneyUserData(Monney_User__c monneyUser, List<Expense_Category__c> userCategoriesWithExpenses) {
 		List<ExpenseCategoryData> categoriesWithExpenses = new List<ExpenseCategoryData>();
 
 		for (Expense_Category__c category :userCategoriesWithExpenses) {
 			List<ExpenseData> thisCategoryExpenses = new List<ExpenseData>();
+
 			for (Expense__c currentExpense :category.Expenses__r) {
 				ExpenseData expenseData = new ExpenseData(currentExpense);
 				thisCategoryExpenses.add(expenseData);
@@ -55,6 +54,7 @@ public with sharing class MonneyHomeController {
 			ExpenseCategoryData currentExpenseCategoryData = new ExpenseCategoryData(category, thisCategoryExpenses);
 			categoriesWithExpenses.add(currentExpenseCategoryData);
 		}
+
 		MonneyUserData currentMonneyUserData = new MonneyUserData(monneyUser, categoriesWithExpenses);
 
 		return currentMonneyUserData;
