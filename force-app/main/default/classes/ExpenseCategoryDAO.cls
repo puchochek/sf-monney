@@ -21,7 +21,7 @@ public with sharing class ExpenseCategoryDAO {
 		Set<Id> createdCategoriesIds = new Set<Id>();
 
 		for (Database.SaveResult createdCategoryResult :newExpensesCategories) {
-			if(createdCategoryResult.isSuccess()) {
+			if (createdCategoryResult.isSuccess()) {
 				createdCategoriesIds.add(createdCategoryResult.getId());
 			} else {
 				for(Database.Error error :createdCategoryResult.getErrors()) {
@@ -31,7 +31,7 @@ public with sharing class ExpenseCategoryDAO {
 		}
 
         List<Expense_Category__c> insertedCategories = new List<Expense_Category__c>();
-		if(!createdCategoriesIds.isEmpty()) {
+		if (!createdCategoriesIds.isEmpty()) {
 			insertedCategories = getCategoriesWithExpensesByCategoryId(createdCategoriesIds);
 		}
 

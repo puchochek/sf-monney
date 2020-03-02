@@ -5,16 +5,16 @@ public with sharing class MonneyUserDAO {
 
 	public static List<Monney_User__c> getMonneyUserByUserId(Set<Id> userIds) {
 		List<Monney_User__c> monneyUser = [SELECT User__c, Last_Saving_Date__c, Balance_Limit__c, Id
-										   FROM Monney_User__c
-										   WHERE User__c IN :userIds];
+						   FROM Monney_User__c
+						   WHERE User__c IN :userIds];
 
 		return monneyUser;
 	}
 
 	public static List<Monney_User__c> getMonneyUserById(Set<Id> monneyUserIds) {
 		List<Monney_User__c> monneyUser = [SELECT User__c, Last_Saving_Date__c, Balance_Limit__c, Id
-										   FROM Monney_User__c
-										   WHERE Id IN :monneyUserIds];
+						   FROM Monney_User__c
+					           WHERE Id IN :monneyUserIds];
 
 		return monneyUser;
 	}
@@ -26,7 +26,7 @@ public with sharing class MonneyUserDAO {
 		Set<Id> createdMonneyUsersIds = new Set<Id>();
 
 		for (Database.SaveResult newMoneyUsersResult :newMoneyUsers) {
-			if(newMoneyUsersResult.isSuccess()) {
+			if (newMoneyUsersResult.isSuccess()) {
 				createdMonneyUsersIds.add(newMoneyUsersResult.getId());
 			} else {
 				for(Database.Error error :newMoneyUsersResult.getErrors()) {
@@ -36,7 +36,7 @@ public with sharing class MonneyUserDAO {
 		}
 
 		List<Monney_User__c> insertedMoneyUsers = new List<Monney_User__c>();
-		if(!createdMonneyUsersIds.isEmpty()) {
+		if (!createdMonneyUsersIds.isEmpty()) {
 			insertedMoneyUsers = getMonneyUserById(createdMonneyUsersIds);
 		}
 

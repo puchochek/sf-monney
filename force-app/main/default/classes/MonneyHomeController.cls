@@ -13,10 +13,10 @@ public with sharing class MonneyHomeController {
 		List<Monney_User__c> monneyUsersByUserId = MonneyUserDAO.getMonneyUserByUserId(userId);
 		Monney_User__c currentUser = new Monney_User__c();
 
-		if(monneyUsersByUserId.isEmpty()) {
-			currentUser = MonneyUserDAO.createMonneyUser(userId) [0];
+		if (monneyUsersByUserId.isEmpty()) {
+			currentUser = MonneyUserDAO.createMonneyUser(userId)[0];
 		} else {
-			currentUser = monneyUsersByUserId [0];
+			currentUser = monneyUsersByUserId[0];
 		}
 
 		return currentUser;
@@ -26,7 +26,7 @@ public with sharing class MonneyHomeController {
 		List<Expense_Category__c> userCategoriesWithExpenses = ExpenseCategoryDAO.getCategoriesWithExpensesByMonneyUserId(monneyUserId);
 		List<Expense_Category__c> categoriesWithExpensesToBuildWrapper = new List<Expense_Category__c>();
 
-		if(userCategoriesWithExpenses.isEmpty()) {
+		if (userCategoriesWithExpenses.isEmpty()) {
 			Expense_Category__c incomeCategoryForNewUser = new Expense_Category__c();
 			incomeCategoryForNewUser.Name = 'Income';
 			incomeCategoryForNewUser.Description__c = 'Keeps your incomes data';
