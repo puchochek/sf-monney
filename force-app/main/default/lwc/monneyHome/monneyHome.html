@@ -1,0 +1,31 @@
+<template>
+    <div class="monney-home-container slds-box">
+
+        <div class="slds-text-title_caps slds-text-align_left slds-text-heading_large slds-text-title_bold">
+            {monneyHomeTitle}
+        </div>
+
+        <template if:true={isError}>
+            <c-error-notification></c-error-notification>
+        </template>
+
+        <template if:true={currentAppUser}>
+            <div class="balance-panel-container slds-grid slds-gutters">
+                <div class="income-panel-container slds-col slds-size-6-of-12">
+                    <template if:true={incomeCategory}>
+                        <c-category-card category={incomeCategory}></c-category-card>
+                    </template>
+                </div>
+                <div class="balance-info-container slds-col slds-size-6-of-12">
+                    <c-balance></c-balance>
+                </div>
+            </div>
+            <div class="categories">
+                categories list goes here
+            </div>
+
+        </template>
+    </div>
+
+
+</template>
