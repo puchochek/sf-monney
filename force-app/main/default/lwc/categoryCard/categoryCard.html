@@ -1,13 +1,13 @@
 <template>
-    <div class="category-card-container">
-        <article class="slds-card">
-            <div class="slds-card__header slds-grid">
+    <div class="category-card-container slds-grid slds-card">
+        <div class="slds-col slds-size--8-of-12">
+            <div class="slds-m-top_small">
                 <header class="slds-media slds-media_center slds-has-flexi-truncate">
                     <div class="slds-media__figure">
                         <span class="slds-icon_container" title="category">
-                            <lightning-icon icon-name="standard:event" size="small" alternative-text="category"
-                                title="category"></lightning-icon>
-                            <span class="slds-assistive-text">incomes</span>
+                            <lightning-icon icon-name={icon} size="small" alternative-text="category" title="category">
+                            </lightning-icon>
+                            <span class="slds-assistive-text">{category.name}</span>
                         </span>
                     </div>
                     <div class="slds-media__body">
@@ -19,27 +19,27 @@
                     </div>
                 </header>
             </div>
-            <div class="slds-card__body slds-card__body_inner">
-                <div class="slds-p-horizontal_small">
-                    <article class="slds-tile">
-                        <div class="slds-tile__detail">
-                            <dl class="slds-list_horizontal slds-wrap">
-                                <dt class="slds-item_label slds-text-color_weak slds-truncate" title="First Label">
-                                    First Label:</dt>
-                                <dd class="slds-item_detail slds-truncate" title="Description for first label">
-                                    Description for first label</dd>
-                                <dt class="slds-item_label slds-text-color_weak slds-truncate" title="Second Label">
-                                    Second Label:</dt>
-                                <dd class="slds-item_detail slds-truncate" title="Description for second label">
-                                    Description for second label</dd>
-                            </dl>
-                        </div>
-                        <div class="slds-text-align_right">
-                            <button class="slds-button slds-button_neutral">Add</button>
-                        </div>
-                    </article>
+            <div class="slds-card__body slds-card__body_inner slds-p-left_none">
+                <div class="slds-grid slds-text-align_left">
+                    <div class="slds-col slds-size--3-of-12 slds-m-left_none slds-p-left_none">
+                        <div>{lastTransactionLbl}</div>
+                        <div>{transactionsTotalLbl}</div>
+                    </div>
+                    <div class="slds-col slds-size--9-of-12">
+                        <div>{lastTransactionValue}</div>
+                        <div>{transactionsTotalValue}</div>
+                    </div>
                 </div>
             </div>
-        </article>
+        </div>
+
+        <div class="slds-col slds-size--4-of-12 slds-p-vertical_small">
+            <div class="slds-text-align_right slds-p-bottom_xx-small">
+                <button class="slds-button slds-button_neutral slds-button_stretch">{viewAllBtnLbl}</button>
+            </div>
+            <div class="slds-text-align_right slds-p-top_xx-small">
+                <button class="slds-button slds-button_neutral slds-button_stretch">{addBtnLbl}</button>
+            </div>
+        </div>
     </div>
 </template>

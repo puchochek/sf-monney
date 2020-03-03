@@ -7,11 +7,12 @@ import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 const TOAST_ERROR_VARIANT = 'error';
 const HOME_ERROR_MESSAGE = 'Opps! Someting is wrong. Please, try again!';
+const INCOME_CATEGORY_ICON = 'custom:custom17';
 
 export default class MonneyHome extends LightningElement {
     currentAppUser;
     monneyHomeTitle = 'Monney';
-    incomeCategory;
+    incomeCard;
     isDataLoaded = false;
     isError;
 
@@ -48,11 +49,20 @@ export default class MonneyHome extends LightningElement {
 
     setHomeInitialData(currentUser) {
         this.currentAppUser = JSON.parse(currentUser);
-        console.log('---> this.currentAppUser', this.currentAppUser );
-        this.incomeCategory = this.currentAppUser.categoriesWithExpenses.find(category => category.isIncome);
+        console.log('---> this.currentAppUser', this.currentAppUser);
         this.isDataLoaded = true;
+        this.setIncomeCategory();
     }
 
+    setIncomeCategory() {
+        const incomeCategory = this.currentAppUser.categoriesWithExpenses.find(category => category.isIncome);
+        this.incomeCard = {
+            category: incomeCategory,
+            icon: INCOME_CATEGORY_ICON
+        };
+
+    }
+    //TODO change to success notification toast
     showErrorMessage(toastMessage, toastVariant = TOAST_ERROR_VARIANT) {
         const toastEvent = new ShowToastEvent({
             message: toastMessage,
