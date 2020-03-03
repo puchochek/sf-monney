@@ -12,7 +12,8 @@ export default class MonneyHome extends LightningElement {
     currentAppUser;
     monneyHomeTitle = 'Monney';
     incomeCategory;
-    isDataLoaded = false
+    isDataLoaded = false;
+    isError;
 
     constructor() {
         super();
@@ -22,7 +23,9 @@ export default class MonneyHome extends LightningElement {
                     if (result) {
                         this.setHomeInitialData(result);
                     } else {
-                        this.showErrorMessage(HOME_ERROR_MESSAGE);
+                        console.log('---> no result');
+                        //this.showErrorMessage(HOME_ERROR_MESSAGE);
+                        this.isError = true;
                     }
                 })
         }
@@ -45,6 +48,7 @@ export default class MonneyHome extends LightningElement {
 
     setHomeInitialData(currentUser) {
         this.currentAppUser = JSON.parse(currentUser);
+        console.log('---> this.currentAppUser', this.currentAppUser );
         this.incomeCategory = this.currentAppUser.categoriesWithExpenses.find(category => category.isIncome);
         this.isDataLoaded = true;
     }

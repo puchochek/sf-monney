@@ -1,22 +1,26 @@
 public with sharing class MonneyHomeController {
-
 	@AuraEnabled
 	public static String getCurrentMonneyUser(Id userId) {
-		Monney_User__c currentMonneyUser = getMonneyUserByUserId(userId);
-		List<Expense_Category__c> monneyUserCategoriesWithExpenses = getMonneyUserCategoriesWithExpenses(currentMonneyUser.Id);
-		MonneyUserData monneyUserData = buildMonneyUserData(currentMonneyUser, monneyUserCategoriesWithExpenses);
+		try {
+			Monney_User__c currentMonneyUser = getMonneyUserByUserId(userId);
+			List<Expense_Category__c> monneyUserCategoriesWithExpenses = getMonneyUserCategoriesWithExpenses(currentMonneyUser.Id);
+			MonneyUserData monneyUserData = buildMonneyUserData(currentMonneyUser, monneyUserCategoriesWithExpenses);
 
-		return JSON.serialize(monneyUserData);
+			return JSON.serialize(monneyUserData);
+		} catch(Exception e) {
+			System.debug(e);
+			return null;
+		}
 	}
 
 	public static Monney_User__c getMonneyUserByUserId(Id userId) {
 		List<Monney_User__c> monneyUsersByUserId = MonneyUserDAO.getMonneyUserByUserId(userId);
 		Monney_User__c currentUser = new Monney_User__c();
 
-		if (monneyUsersByUserId.isEmpty()) {
-			currentUser = MonneyUserDAO.createMonneyUser(userId)[0];
+		if(monneyUsersByUserId.isEmpty()) {
+			currentUser = MonneyUserDAO.createMonneyUser(userId) [0];
 		} else {
-			currentUser = monneyUsersByUserId[0];
+			currentUser = monneyUsersByUserId [0];
 		}
 
 		return currentUser;
@@ -26,7 +30,7 @@ public with sharing class MonneyHomeController {
 		List<Expense_Category__c> userCategoriesWithExpenses = ExpenseCategoryDAO.getCategoriesWithExpensesByMonneyUserId(monneyUserId);
 		List<Expense_Category__c> categoriesWithExpensesToBuildWrapper = new List<Expense_Category__c>();
 
-		if (userCategoriesWithExpenses.isEmpty()) {
+		if(userCategoriesWithExpenses.isEmpty()) {
 			Expense_Category__c incomeCategoryForNewUser = new Expense_Category__c();
 			incomeCategoryForNewUser.Name = 'Income';
 			incomeCategoryForNewUser.Description__c = 'Keeps your incomes data';
@@ -59,5 +63,4 @@ public with sharing class MonneyHomeController {
 
 		return currentMonneyUserData;
 	}
-
 }
