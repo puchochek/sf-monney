@@ -6,7 +6,7 @@ export default class CategoryCard extends LightningElement {
     icon;
     expenses;
     viewAllBtnLbl = 'View all';
-    addBtnLbl = 'All';
+    addBtnLbl = 'Add';
     lastTransactionLbl = 'Last: ';
     transactionsTotalLbl = 'Total: ';
     lastTransactionValue;
@@ -19,6 +19,8 @@ export default class CategoryCard extends LightningElement {
     set cardCategory(value) {
         this.setCategory(value);
     }
+
+    @api categoryToAddExpense;
 
     setCategory(cardCategory) {
         this.category = cardCategory.category;
@@ -35,5 +37,15 @@ export default class CategoryCard extends LightningElement {
 
     setTransactionsTotalValue() {
 
+    }
+
+    passCategoryDataToHomeCmp() {
+        this.categoryToAddExpense = this.category;
+
+        const addExpenseEvent = new CustomEvent("addexpense", {
+            detail: this.categoryToAddExpense
+        });
+
+        this.dispatchEvent(addExpenseEvent);
     }
 }

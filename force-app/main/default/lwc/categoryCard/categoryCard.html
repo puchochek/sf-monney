@@ -7,13 +7,13 @@
                         <span class="slds-icon_container" title="category">
                             <lightning-icon icon-name={icon} size="small" alternative-text="category" title="category">
                             </lightning-icon>
-                            <span class="slds-assistive-text">{category.name}</span>
+                            <span class="slds-assistive-text"  >{category.name}</span>
                         </span>
                     </div>
                     <div class="slds-media__body">
                         <h2 class="slds-card__header-title">
                             <a href="javascript:void(0);" class="slds-card__header-link slds-truncate" title="category">
-                                <span>{category.name}</span>
+                                <div>{category.name}</div>
                             </a>
                         </h2>
                     </div>
@@ -38,7 +38,7 @@
                 <button class="slds-button slds-button_neutral slds-button_stretch">{viewAllBtnLbl}</button>
             </div>
             <div class="slds-text-align_right slds-p-top_xx-small">
-                <button class="slds-button slds-button_neutral slds-button_stretch">{addBtnLbl}</button>
+                <button class="slds-button slds-button_neutral slds-button_stretch" onclick={passCategoryDataToHomeCmp}>{addBtnLbl}</button>
             </div>
         </div>
     </div>

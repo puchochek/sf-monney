@@ -15,6 +15,7 @@ export default class MonneyHome extends LightningElement {
     incomeCard;
     isDataLoaded = false;
     isError;
+    isNewExpenseRequired;
 
     constructor() {
         super();
@@ -61,6 +62,12 @@ export default class MonneyHome extends LightningElement {
             icon: INCOME_CATEGORY_ICON
         };
 
+    }
+
+    openAddExpenseModal(event) {
+        const categoryToAddExpense = JSON.parse(JSON.stringify(event.detail));
+        console.log('---> categoryToAddExpense', categoryToAddExpense);
+        this.isNewExpenseRequired = true;
     }
     //TODO change to success notification toast
     showErrorMessage(toastMessage, toastVariant = TOAST_ERROR_VARIANT) {

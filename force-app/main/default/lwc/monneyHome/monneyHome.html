@@ -13,7 +13,8 @@
             <div class="balance-panel-container slds-grid slds-gutters">
                 <div class="income-panel-container slds-col slds-size--4-of-12">
                     <template if:true={incomeCard}>
-                        <c-category-card card-category={incomeCard}></c-category-card>
+                        <c-category-card card-category={incomeCard} onaddexpense={openAddExpenseModal}>
+                        </c-category-card>
                     </template>
                 </div>
                 <div class="balance-info-container slds-col slds-size--8-of-12">
@@ -23,9 +24,12 @@
             <div class="categories">
                 categories list goes here
             </div>
-
         </template>
-    </div>
 
+        <template if:true={isNewExpenseRequired}>
+            <c-add-expense></c-add-expense>
+        </template>
+
+    </div>
 
 </template>
