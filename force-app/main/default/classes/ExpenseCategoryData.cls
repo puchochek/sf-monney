@@ -4,6 +4,7 @@ public with sharing class ExpenseCategoryData {
 	public Boolean isIncome;
 	public String description;
 	public String monneyUserId;
+	public String icon;
 	public List<ExpenseData> expenses;
 
 	public ExpenseCategoryData(Expense_Category__c expenseCategory, List<ExpenseData> expenses) {
@@ -12,6 +13,7 @@ public with sharing class ExpenseCategoryData {
 		this.isIncome = expenseCategory.isIncome__c;
 		this.description = expenseCategory.Description__c;
 		this.monneyUserId = expenseCategory.Monney_User__c;
+		this.icon = expenseCategory.Icon__c;
 		this.expenses = expenses;
 	}
 }

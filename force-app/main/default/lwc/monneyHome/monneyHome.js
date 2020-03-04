@@ -7,15 +7,16 @@ import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 const TOAST_ERROR_VARIANT = 'error';
 const HOME_ERROR_MESSAGE = 'Opps! Someting is wrong. Please, try again!';
-const INCOME_CATEGORY_ICON = 'custom:custom17';
 
 export default class MonneyHome extends LightningElement {
     currentAppUser;
     monneyHomeTitle = 'Monney';
-    incomeCard;
+    income;
     isDataLoaded = false;
     isError;
     isNewExpenseRequired;
+
+    @api categoryToAddExpense;
 
     constructor() {
         super();
@@ -25,8 +26,6 @@ export default class MonneyHome extends LightningElement {
                     if (result) {
                         this.setHomeInitialData(result);
                     } else {
-                        console.log('---> no result');
-                        //this.showErrorMessage(HOME_ERROR_MESSAGE);
                         this.isError = true;
                     }
                 })
@@ -56,18 +55,16 @@ export default class MonneyHome extends LightningElement {
     }
 
     setIncomeCategory() {
-        const incomeCategory = this.currentAppUser.categoriesWithExpenses.find(category => category.isIncome);
-        this.incomeCard = {
-            category: incomeCategory,
-            icon: INCOME_CATEGORY_ICON
-        };
-
+        this.income = this.currentAppUser.categoriesWithExpenses.find(category => category.isIncome);
     }
 
-    openAddExpenseModal(event) {
-        const categoryToAddExpense = JSON.parse(JSON.stringify(event.detail));
-        console.log('---> categoryToAddExpense', categoryToAddExpense);
+    openAddExpenseForm(event) {
+        this.categoryToAddExpense = JSON.parse(JSON.stringify(event.detail));
         this.isNewExpenseRequired = true;
+    }
+
+    closeAddExpenseForm() {
+        this.isNewExpenseRequired = false;
     }
     //TODO change to success notification toast
     showErrorMessage(toastMessage, toastVariant = TOAST_ERROR_VARIANT) {

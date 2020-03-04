@@ -23,10 +23,8 @@ export default class CategoryCard extends LightningElement {
     @api categoryToAddExpense;
 
     setCategory(cardCategory) {
-        this.category = cardCategory.category;
-        this.icon = cardCategory.icon;
-        this.expenses = cardCategory.category.expenses;
-        console.log('---> this.category ', JSON.parse(JSON.stringify(this.category)));
+        this.category = cardCategory;
+        this.expenses = cardCategory.expenses;
         this.lastTransactionValue = this.expenses.length ? this.setLastTransactionValue() : 0;
         this.transactionsTotalValue = this.expenses.length ? this.setTransactionsTotalValue() : 0;
     }

@@ -36,6 +36,7 @@ public with sharing class MonneyHomeController {
 			incomeCategoryForNewUser.Description__c = 'Keeps your incomes data';
 			incomeCategoryForNewUser.Monney_User__c = monneyUserId;
 			incomeCategoryForNewUser.isIncome__c = true;
+			incomeCategoryForNewUser.Icon__c = 'custom:custom17';
 			categoriesWithExpensesToBuildWrapper = ExpenseCategoryDAO.createCategory(new List<Expense_Category__c>{ incomeCategoryForNewUser });
 		} else {
 			categoriesWithExpensesToBuildWrapper = userCategoriesWithExpenses;
