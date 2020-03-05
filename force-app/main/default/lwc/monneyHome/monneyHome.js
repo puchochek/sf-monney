@@ -14,8 +14,11 @@ export default class MonneyHome extends LightningElement {
     income;
     isDataLoaded = false;
     isError;
-    isNewExpenseRequired;
+    isExpenseCreateEditFormOpen;
+    isCategoryCreateEditFormOpen;
     upsertedExpenses;
+    expenseCardsCategories;
+    noExpenseCategories;
 
     @api categoryToAddExpense;
 
@@ -53,24 +56,43 @@ export default class MonneyHome extends LightningElement {
         console.log('---> this.currentAppUser', this.currentAppUser);
         this.isDataLoaded = true;
         this.setIncomeCategory();
+        this.setExpensesCategories();
     }
 
     setIncomeCategory() {
         this.income = this.currentAppUser.categoriesWithExpenses.find(category => category.isIncome);
     }
 
-    openAddExpenseForm(event) {
-        this.categoryToAddExpense = JSON.parse(JSON.stringify(event.detail));
-        this.isNewExpenseRequired = true;
+    setExpensesCategories() {
+        const expenseCategories = this.currentAppUser.categoriesWithExpenses.filter(category => !category.isIncome);
+
+        if (expenseCategories.length) {
+            this.expenseCardsCategories = expenseCategories;
+        } else {
+            this.noExpenseCategories = true;
+        }
     }
 
-    closeAddExpenseForm(event) {
-        this.isNewExpenseRequired = false;
+    openExpenseForm(event) {
+        this.categoryToAddExpense = JSON.parse(JSON.stringify(event.detail));
+        this.isExpenseCreateEditFormOpen = true;
+    }
+
+    closeExpenseForm(event) {
+        this.isExpenseCreateEditFormOpen = false;
         this.upsertedExpenses = JSON.parse(JSON.stringify(event.detail));
 
         if (this.upsertedExpenses) {
             this.updateCurrentAppUserExpenses();
         }
+    }
+
+    openCategoryForm(event) {
+        this.isCategoryCreateEditFormOpen = true;
+    }
+
+    closeCategoryForm() {
+        this.isCategoryCreateEditFormOpen = false;
     }
 
     updateCurrentAppUserExpenses() {

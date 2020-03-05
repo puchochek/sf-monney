@@ -1,0 +1,49 @@
+<template>
+    <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_small"
+        aria-labelledby="add-expense-form" aria-modal="true" aria-describedby="add-expense-form">
+        <div class="slds-modal__container">
+
+            <header class="slds-modal__header slds-list_horizontal">
+                <lightning-icon icon-name={headerIcon} size="small" alternative-text="category" title="category">
+                </lightning-icon>
+                <h2 class="slds-modal__title slds-hyphenate slds-p-left_medium">{headerTitle}</h2>
+            </header>
+
+            <div class="slds-modal__content slds-p-around_medium">
+                <div class="slds-form slds-form_stacked">
+                    <div class="slds-form-element">
+                        <label class="slds-form-element__label" for="name">
+                            {nameLbl}</label>
+                        <div class="slds-form-element__control">
+                            <input type="text" id="name" name="name" class="slds-input" placeholder={namePlaceholder}>
+                        </div>
+                    </div>
+                    <div class="slds-form-element">
+                        <label class="slds-form-element__label" for="description">{descriptionLbl}</label>
+                        <div class="slds-form-element__control">
+                            <textarea id="description" name="description" class="slds-textarea"
+                                placeholder={descriptionPlaceholder}></textarea>
+                        </div>
+                    </div>
+                    <div class="slds-form-element">
+                        <label class="slds-form-element__label" for="icon">{iconLbl}</label>
+                        <div class="slds-form-element__control">
+                            <lightning-icon class="slds-text-link_reset" icon-name={headerIcon} size="small" alternative-text="category"
+                                title="category">
+                            </lightning-icon>
+                            <div class="slds-text-link slds-text-body_small">{chengeIconLbl}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <footer class="slds-modal__footer">
+                <button class="slds-button slds-button_neutral"
+                    onclick={dispatchCloseCategoryFormEvent}>{cancelBtn}</button>
+                <button class="slds-button slds-button_brand" onclick={saveCategory}>{saveBtn}</button>
+            </footer>
+
+        </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+</template>

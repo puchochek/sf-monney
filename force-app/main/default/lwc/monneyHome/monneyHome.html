@@ -1,7 +1,7 @@
 <template>
     <div class="monney-home-container slds-box">
 
-        <div class="slds-text-title_caps slds-text-align_left slds-text-heading_large slds-text-title_bold">
+        <div class="slds-text-title_caps slds-text-align_left slds-text-heading_large slds-text-title_bold slds-m-bottom_small">
             {monneyHomeTitle}
         </div>
 
@@ -11,24 +11,37 @@
 
         <template if:true={currentAppUser}>
             <div class="balance-panel-container slds-grid slds-gutters">
+
                 <div class="income-panel-container slds-col slds-size--4-of-12">
                     <template if:true={income}>
-                        <c-category-card card-category={income} onaddexpense={openAddExpenseForm}>
+                        <c-category-card card-category={income} onaddexpense={openExpenseForm}>
                         </c-category-card>
                     </template>
                 </div>
+
                 <div class="balance-info-container slds-col slds-size--8-of-12">
                     <c-balance></c-balance>
                 </div>
             </div>
-            <div class="categories">
-                categories list goes here
+
+            <div class="slds-m-top_small categories">
+                <template if:true={expenseCardsCategories}>
+                    categories list goes here
+                </template>
+                <template if:true={noExpenseCategories}>
+                    <c-no-expense-categories current-app-user={currentAppUser} onaddcategory={openCategoryForm}></c-no-expense-categories>
+                </template>
+
             </div>
         </template>
 
-        <template if:true={isNewExpenseRequired}>
-            <c-expense-create-edit-form category-to-add-expense={categoryToAddExpense} is-create={isNewExpenseRequired}
-                oncloseaddexpenseform={closeAddExpenseForm}></c-expense-create-edit-form>
+        <template if:true={isExpenseCreateEditFormOpen}>
+            <c-expense-create-edit-form category-to-add-expense={categoryToAddExpense} is-create={isExpenseCreateEditFormOpen}
+                oncloseexpenseform={closeExpenseForm}></c-expense-create-edit-form>
+        </template>
+
+        <template if:true={isCategoryCreateEditFormOpen}>
+            <c-category-create-edit-form onclosecategoryform={closeCategoryForm} ></c-category-create-edit-form>
         </template>
 
     </div>

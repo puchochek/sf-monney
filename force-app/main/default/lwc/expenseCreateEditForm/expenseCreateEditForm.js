@@ -152,7 +152,7 @@ export default class ExpenseCreateEditForm extends LightningElement {
 
     dispatchCloseAddExpenseFormEvent() {
         console.log('---> this.upsertedExpenses', this.upsertedExpenses);
-        const closeAddExpenseForm = new CustomEvent("closeaddexpenseform", {
+        const closeAddExpenseForm = new CustomEvent("oncloseexpenseform", {
             detail: this.upsertedExpenses
         });
 
