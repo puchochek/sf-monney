@@ -8,9 +8,9 @@ public with sharing class ExpenseDAO {
 	}
 
 	public static List<Expense__c> insertExpense(ExpenseData expense) {
-		System.debug('---> insertExpense dao' + expense);
+		
 		Expense__c expenseToSave = buildExpenseToSave(expense);
-
+		System.debug('---> insertExpense expenseToSave ' + expense);
 		List<Expense__c> insertedExpenses = new List<Expense__c>();
 		DMLResult insertExpenseResult = DMLService.insertSObjects(new List<Expense__c>{ expenseToSave });
 

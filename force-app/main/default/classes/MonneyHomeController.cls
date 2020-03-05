@@ -2,8 +2,8 @@ public with sharing class MonneyHomeController {
 	@AuraEnabled
 	public static String getCurrentMonneyUser(Id userId) {
 		try {
-			Monney_User__c currentMonneyUser = getMonneyUserByUserId(userId);
-			List<Expense_Category__c> monneyUserCategoriesWithExpenses = getMonneyUserCategoriesWithExpenses(currentMonneyUser.Id);
+            Monney_User__c currentMonneyUser = getMonneyUserByUserId(userId);
+            List<Expense_Category__c> monneyUserCategoriesWithExpenses = getMonneyUserCategoriesWithExpenses(currentMonneyUser.Id);
 			MonneyUserData monneyUserData = buildMonneyUserData(currentMonneyUser, monneyUserCategoriesWithExpenses);
 
 			return JSON.serialize(monneyUserData);
