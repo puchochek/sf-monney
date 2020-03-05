@@ -5,9 +5,10 @@
                 <header class="slds-media slds-media_center slds-has-flexi-truncate">
                     <div class="slds-media__figure">
                         <span class="slds-icon_container" title="category">
-                            <lightning-icon icon-name={category.icon} size="small" alternative-text="category" title="category">
+                            <lightning-icon icon-name={category.icon} size="small" alternative-text="category"
+                                title="category">
                             </lightning-icon>
-                            <span class="slds-assistive-text" >{category.name}</span>
+                            <span class="slds-assistive-text">{category.name}</span>
                         </span>
                     </div>
                     <div class="slds-media__body">
@@ -20,14 +21,14 @@
                 </header>
             </div>
             <div class="slds-card__body slds-card__body_inner slds-p-left_none">
-                <div class="slds-grid slds-text-align_left">
-                    <div class="slds-col slds-size--3-of-12 slds-m-left_none slds-p-left_none">
+                <div class=" slds-text-align_left slds-text-color_weak">
+                    <div class=" slds-list_horizontal slds-m-left_none slds-p-left_none">
                         <div>{lastTransactionLbl}</div>
-                        <div>{transactionsTotalLbl}</div>
+                        <div class="slds-m-left_small">{lastTransactionValue}</div>
                     </div>
-                    <div class="slds-col slds-size--9-of-12">
-                        <div>{lastTransactionValue}</div>
-                        <div>{transactionsTotalValue}</div>
+                    <div class="slds-list_horizontal slds-m-left_none slds-p-left_none">
+                        <div>{transactionsTotalLbl}</div>
+                        <div class="slds-m-left_small">{transactionsTotalValue}</div>
                     </div>
                 </div>
             </div>
@@ -38,7 +39,8 @@
                 <button class="slds-button slds-button_neutral slds-button_stretch">{viewAllBtnLbl}</button>
             </div>
             <div class="slds-text-align_right slds-p-top_xx-small">
-                <button class="slds-button slds-button_neutral slds-button_stretch" onclick={passCategoryDataToHomeCmp}>{addBtnLbl}</button>
+                <button class="slds-button slds-button_neutral slds-button_stretch"
+                    onclick={passCategoryDataToHomeCmp}>{addBtnLbl}</button>
             </div>
         </div>
     </div>

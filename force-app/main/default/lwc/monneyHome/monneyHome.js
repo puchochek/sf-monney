@@ -15,6 +15,7 @@ export default class MonneyHome extends LightningElement {
     isDataLoaded = false;
     isError;
     isNewExpenseRequired;
+    upsertedExpenses;
 
     @api categoryToAddExpense;
 
@@ -63,9 +64,35 @@ export default class MonneyHome extends LightningElement {
         this.isNewExpenseRequired = true;
     }
 
-    closeAddExpenseForm() {
+    closeAddExpenseForm(event) {
         this.isNewExpenseRequired = false;
+        this.upsertedExpenses = JSON.parse(JSON.stringify(event.detail));
+
+        if (this.upsertedExpenses) {
+            this.updateCurrentAppUserExpenses();
+        }
     }
+
+    updateCurrentAppUserExpenses() {
+        this.currentAppUser.categoriesWithExpenses.forEach(category => {
+            const upsertedExpensesForTheCategory = this.upsertedExpenses.filter(expense => expense.category === category.id);
+            const existedCategoryExpenses = category.expenses;
+            this.updateExpensesForCurrentCategory(upsertedExpensesForTheCategory, existedCategoryExpenses)
+        });
+    }
+
+    updateExpensesForCurrentCategory(upsertedExpensesForTheCategory, existedCategoryExpenses) {
+        upsertedExpensesForTheCategory.forEach(upsertedExpense => {
+            const existedExpense = existedCategoryExpenses.find(expense => expense.id === upsertedExpense.id);
+
+            if (existedExpense) {
+                existedExpense = upsertedExpense;
+            } else {
+                existedCategoryExpenses.push(upsertedExpense);
+            }
+        });
+    }
+
     //TODO change to success notification toast
     showErrorMessage(toastMessage, toastVariant = TOAST_ERROR_VARIANT) {
         const toastEvent = new ShowToastEvent({

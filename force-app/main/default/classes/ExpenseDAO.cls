@@ -8,9 +8,7 @@ public with sharing class ExpenseDAO {
 	}
 
 	public static List<Expense__c> insertExpense(ExpenseData expense) {
-		
 		Expense__c expenseToSave = buildExpenseToSave(expense);
-		System.debug('---> insertExpense expenseToSave ' + expense);
 		List<Expense__c> insertedExpenses = new List<Expense__c>();
 		DMLResult insertExpenseResult = DMLService.insertSObjects(new List<Expense__c>{ expenseToSave });
 
@@ -20,17 +18,16 @@ public with sharing class ExpenseDAO {
 		} else {
 			insertedExpenses = getExpensesById(insertExpenseResult.successRecordsIds);
 		}
-		System.debug('---> insertedExpenses ' + insertedExpenses);
+
 		return insertedExpenses;
 	}
 
 	public static List<Expense__c> updateExpense(ExpenseData expense) {
-		System.debug('---> updateExpense dao' + expense);
-
 		return new List<Expense__c>();
 	}
 
 	private static Expense__c buildExpenseToSave(ExpenseData expense) {
+        System.debug('---> expenseToSave b' + expense);
 		Expense__c expenseToSave = new Expense__c();
 		expenseToSave.Id = expense.id;
 		expenseToSave.Expense_Category__c = expense.category;
@@ -38,7 +35,7 @@ public with sharing class ExpenseDAO {
 		expenseToSave.Sum__c = expense.sum;
 		expenseToSave.Comment__c = expense.comment;
 		expenseToSave.isIncome__c = expense.isIncome;
-
+		System.debug('---> expenseToSave a' + expenseToSave);
 		return expenseToSave;
 	}
 }

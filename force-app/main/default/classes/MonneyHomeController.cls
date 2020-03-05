@@ -27,7 +27,7 @@ public with sharing class MonneyHomeController {
 	}
 
 	public static List<Expense_Category__c> getMonneyUserCategoriesWithExpenses(Id monneyUserId) {
-		List<Expense_Category__c> userCategoriesWithExpenses = ExpenseCategoryDAO.getCategoriesWithExpensesByMonneyUserId(monneyUserId);
+		List<Expense_Category__c> userCategoriesWithExpenses = ExpenseCategoryDAO.getCategoriesWithThisMonthExpensesByMonneyUserId(monneyUserId);
 		List<Expense_Category__c> categoriesWithExpensesToBuildWrapper = new List<Expense_Category__c>();
 
 		if(userCategoriesWithExpenses.isEmpty()) {
