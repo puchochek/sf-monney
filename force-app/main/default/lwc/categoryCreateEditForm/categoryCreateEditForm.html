@@ -4,7 +4,8 @@
         <div class="slds-modal__container">
 
             <header class="slds-modal__header slds-list_horizontal">
-                <lightning-icon icon-name={headerIcon} size="small" alternative-text="category" title="category">
+                <lightning-icon icon-name={headerIcon} size="small" alternative-text="category" title="category"
+                    if:true={headerIcon}>
                 </lightning-icon>
                 <h2 class="slds-modal__title slds-hyphenate slds-p-left_medium">{headerTitle}</h2>
             </header>
@@ -26,12 +27,12 @@
                         </div>
                     </div>
                     <div class="slds-form-element">
-                        <label class="slds-form-element__label" for="icon">{iconLbl}</label>
+                        <label class="slds-form-element__label" for="icon" onclick={openIconsSetCmp}
+                            title={iconHint}>{iconLbl}</label>
                         <div class="slds-form-element__control">
-                            <lightning-icon class="slds-text-link_reset" icon-name={headerIcon} size="small" alternative-text="category"
-                                title="category">
+                            <lightning-icon class="slds-text-link_reset" icon-name={cardIcon} size="small"
+                                alternative-text={iconHint} title={iconHint} onclick={openIconsSetCmp}>
                             </lightning-icon>
-                            <div class="slds-text-link slds-text-body_small">{chengeIconLbl}</div>
                         </div>
                     </div>
                 </div>
@@ -46,4 +47,8 @@
         </div>
     </section>
     <div class="slds-backdrop slds-backdrop_open"></div>
+
+    <template if:true={isIconsSetShown}>
+        <c-icons-set oniconselected={setSelectedIcon}></c-icons-set>
+    </template>
 </template>
