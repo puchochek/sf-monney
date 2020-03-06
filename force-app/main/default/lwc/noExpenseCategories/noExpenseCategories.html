@@ -1,11 +1,11 @@
 <template>
-    <div class="no-expense-categories-container slds-box">
-        <div class="error-header slds-text-align_center slds-text-color_weak slds-text-heading_large slds-text-title_bold">
+    <div class="no-expense-categories-container slds-card slds-p-around_x-large">
+        <h2
+            class="slds-text-align_center slds-card__header-title slds-text-title_bold">
             {noCategoriesMessage}
-        </div>
-        <div class="slds-align_absolute-center slds-m-top_x-small">
-            <button class="slds-button slds-button_neutral"
-                onclick={dispatchOpenCategoryFormEvent}>{addBtnLbl}</button>
+        </h2>
+        <div class="slds-align_absolute-center slds-m-top_medium">
+            <button class="slds-button slds-button_neutral" onclick={dispatchOpenCategoryFormEvent}>{addBtnLbl}</button>
         </div>
     </div>
 </template>

@@ -16,7 +16,8 @@
                             <abbr class="slds-required" title="required">* </abbr>{sumLbl}</label>
                         <div class="slds-form-element__control">
                             <input type="text" id="sum" name="sum" class="slds-input" placeholder={sumPlaceholder}
-                                onkeyup={validateDecimalInput} required="" aria-describedby="sum-error">
+                                onkeyup={validateDecimalInput} required="" aria-describedby="sum-error"
+                                autocomplete="off">
                             <div class="slds-form-element__help slds-text-color_error" id="sum-error"
                                 if:true={isSumMalformed}>{malformedSumInputMessage}
                             </div>
@@ -25,13 +26,15 @@
                     <div class="slds-form-element">
                         <label class="slds-form-element__label" for="comment">{commentLbl}</label>
                         <div class="slds-form-element__control">
-                            <textarea id="comment" name="comment" class="slds-textarea" placeholder={commentPlaceholder}></textarea>
+                            <textarea id="comment" name="comment" class="slds-textarea"
+                                placeholder={commentPlaceholder}></textarea>
                         </div>
                     </div>
                     <div class="slds-form-element">
                         <label class="slds-form-element__label" for="date">{dateLbl}</label>
                         <div class="slds-form-element__control">
-                            <input type="date" id="date" name="date" class="slds-input" value={expenseDate} max={maxDate}>
+                            <input type="date" id="date" name="date" class="slds-input" value={expenseDate}
+                                max={maxDate}>
                         </div>
                     </div>
                 </div>

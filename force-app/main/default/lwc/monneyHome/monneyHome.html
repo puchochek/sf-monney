@@ -1,10 +1,6 @@
 <template>
     <div class="monney-home-container slds-box">
 
-        <div class="slds-text-title_caps slds-text-align_left slds-text-heading_large slds-text-title_bold slds-m-bottom_small">
-            {monneyHomeTitle}
-        </div>
-
         <template if:true={isError}>
             <c-error-notification></c-error-notification>
         </template>
@@ -29,7 +25,7 @@
                     categories list goes here
                 </template>
                 <template if:true={noExpenseCategories}>
-                    <c-no-expense-categories current-app-user={currentAppUser} onaddcategory={openCategoryForm}></c-no-expense-categories>
+                    <c-no-expense-categories monney-user-id={monneyUserId} onaddcategory={openCategoryForm}></c-no-expense-categories>
                 </template>
 
             </div>
@@ -41,7 +37,7 @@
         </template>
 
         <template if:true={isCategoryCreateEditFormOpen}>
-            <c-category-create-edit-form onclosecategoryform={closeCategoryForm} ></c-category-create-edit-form>
+            <c-category-create-edit-form category-to-upsert={categoryToUpsert} onclosecategoryform={closeCategoryForm} ></c-category-create-edit-form>
         </template>
 
     </div>

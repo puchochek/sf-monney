@@ -1,4 +1,5 @@
-import { LightningElement } from 'lwc';
+import { LightningElement, api } from 'lwc';
+import save from '@salesforce/apex/ExpenseCategoryController.save';
 
 const DEFAULT_CARD_ICON = 'utility:question';
 export default class CategoryCreateEditForm extends LightningElement {
@@ -16,18 +17,100 @@ export default class CategoryCreateEditForm extends LightningElement {
     descriptionPlaceholder = 'Category description';
     iconHint = 'Click to select a new icon';
     isIconsSetShown;
+    categoryToEdit;
+    monneyUserId;
+
+    @api
+    get categoryToUpsert() {
+        return this._categoryToUpsert;
+    }
+    set categoryToUpsert(value) {
+        this.setCategoryToUpsert(value);
+    }
+
+    setCategoryToUpsert(category) {
+        const categoryToUpsert = JSON.parse(JSON.stringify(category));
+        const isCategoryToEditPassed = this.checkIfCategoryToEditPassed(categoryToUpsert);
+
+        if (isCategoryToEditPassed) {
+            this.categoryToEdit = categoryToUpsert;
+        } else {
+            this.monneyUserId = categoryToUpsert.monneyUserId;
+        }
+    }
+
+    checkIfCategoryToEditPassed(category) {
+        return category.hasOwnProperty('id') ? true : false;
+    }
 
     saveCategory() {
+        const categoryJSON = this.getCategoryJSON();
+
+        console.log('---> categoryInput ', categoryJSON);
+        if (categoryJSON) {
+            save({ "categoryJSON": JSON.stringify(categoryJSON) })
+                .then(result => {
+                    if (result) {
+                        // this.upsertedExpenses = JSON.parse(result);
+                        // this.handleSuccessResult();
+                    } else {
+                        //this.handleErrorResult();
+                    }
+                });
+        } else {
+            //this.handleErrorResult(TOAST_INPUT_ERROR_MESSAGE);
+        }
+    }
+
+    getCategoryJSON() {
         const categoryInput = this.getCategoryInput();
 
+        let categoryToUpsert;
+        if (this.categoryToEdit) {
+            categoryToUpsert = this.addExistedCategoryDataToInput(categoryInput);
+        } else {
+            categoryToUpsert = this.addMonneyUserIdToInput(categoryInput);
+        }
+
+        return categoryToUpsert;
     }
 
     getCategoryInput() {
         const nameInput = this.template.querySelector("[name='name']");
         const descriptionInput = this.template.querySelector("[name='description']");
         const selectedIcon = this.cardIcon;
-        console.log('---> inpts', nameInput.value, ' ', descriptionInput.value, ' ', selectedIcon);
-        // const dateInput = this.template.querySelector("[name='date']");
+
+        const cardInput = {
+            name: nameInput.value,
+            description: descriptionInput.value,
+            icon: selectedIcon,
+        };
+
+        return cardInput;
+    }
+
+    addExistedCategoryDataToInput(categoryInput) {
+        const newCategory = { ...categoryInput };
+        const existedCategory = { ...this.categoryToEdit };
+
+        const categoryToUpsert = {
+            ...newCategory,
+            isIncome: existedCategory.isIncome,
+            monneyUserId: existedCategory.monneyUserId
+        };
+
+        return categoryToUpsert;
+    }
+
+    addMonneyUserIdToInput(categoryInput) {
+        const newCategory = { ...categoryInput };
+
+        const categoryToUpsert = {
+            ...newCategory,
+            monneyUserId: this.monneyUserId
+        };
+
+        return categoryToUpsert;
     }
 
     openIconsSetCmp() {
@@ -38,7 +121,6 @@ export default class CategoryCreateEditForm extends LightningElement {
         this.isIconsSetShown = false;
         const selectedIcon = JSON.parse(JSON.stringify(event.detail));
         this.cardIcon = selectedIcon;
-        console.log('---> this.selectedIcon', selectedIcon);
     }
 
     dispatchCloseCategoryFormEvent() {

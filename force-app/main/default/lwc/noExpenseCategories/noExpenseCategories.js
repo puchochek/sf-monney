@@ -1,27 +1,29 @@
-import { LightningElement, api} from 'lwc';
+import { LightningElement, api } from 'lwc';
 
 export default class NoExpenseCategories extends LightningElement {
-    monneyUserId;
     noCategoriesMessage = `You don't have an Expense categories yet.
     It would be great to add some to keep your expenses in order.`;
     addBtnLbl = 'Add';
+    newCategoryDetail;
 
     @api
-    get currentAppUser() {
-        return this._currentAppUser;
+    get monneyUserId() {
+        return this._monneyUserId;
     }
-    set currentAppUser(value) {
-        this.setAppUser(value);
+    set monneyUserId(value) {
+        this.setNewCategoryDetail(value);
     }
 
-    setAppUser(currentAppUser) {
-        console.log('---> NoExpenseCategories ', currentAppUser);
-        this.monneyUserId = currentAppUser.monneyUserId;
+    setNewCategoryDetail(monneyUserId) {
+        this.newCategoryDetail = {
+            monneyUserId: monneyUserId
+        };
     }
 
     dispatchOpenCategoryFormEvent() {
-        console.log('---> dispatchOpenCategoryFormEvent' );
-        const addCategoryEvent = new CustomEvent("addcategory");
+        const addCategoryEvent = new CustomEvent("addcategory", {
+            detail: this.newCategoryDetail
+        });
 
         this.dispatchEvent(addCategoryEvent);
     }
