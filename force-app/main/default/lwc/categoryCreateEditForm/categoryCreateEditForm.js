@@ -1,5 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import save from '@salesforce/apex/ExpenseCategoryController.save';
+import createCategory from '@salesforce/apex/ExpenseCategoryController.createCategory';
 
 const DEFAULT_CARD_ICON = 'utility:question';
 export default class CategoryCreateEditForm extends LightningElement {
@@ -45,12 +45,14 @@ export default class CategoryCreateEditForm extends LightningElement {
 
     saveCategory() {
         const categoryJSON = this.getCategoryJSON();
+        const bulkCategoriesJSON = [categoryJSON];
 
         console.log('---> categoryInput ', categoryJSON);
         if (categoryJSON) {
-            save({ "categoryJSON": JSON.stringify(categoryJSON) })
+            createCategory({ "categories": JSON.stringify(bulkCategoriesJSON) })
                 .then(result => {
                     if (result) {
+                        //console.log('---> result', result);
                         // this.upsertedExpenses = JSON.parse(result);
                         // this.handleSuccessResult();
                     } else {
