@@ -2,6 +2,7 @@ import { LightningElement, api } from 'lwc';
 
 export default class CategoriesList extends LightningElement {
     addBtnLbl = 'Add category';
+    categoriesHeaderLbl = 'Categories';
     categoriesList;
 
     @api
@@ -13,7 +14,8 @@ export default class CategoriesList extends LightningElement {
     }
 
     setCategoriesList(expensesCategories) {
-        this.categoriesList = expensesCategories;
+        this.categoriesList = JSON.parse(JSON.stringify(expensesCategories));
+        console.log('---> this.categoriesList', this.categoriesList);
     }
 
     dispatchOpenCategoryFormEvent() {

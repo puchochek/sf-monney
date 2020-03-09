@@ -1,5 +1,28 @@
 <template>
-    <div class="slds-align_absolute-center slds-m-top_medium">
-        <button class="slds-button slds-button_neutral" onclick={dispatchOpenCategoryFormEvent}>{addBtnLbl}</button>
-    </div>
+    <article class="slds-card">
+        <div class="slds-card__header slds-grid">
+            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                <div class="slds-media__body">
+                    <h2 class="slds-card__header-title slds-text-title_bold">
+                        <span>{categoriesHeaderLbl}</span>
+                    </h2>
+                </div>
+                <div class="slds-no-flex">
+                    <button class="slds-button slds-button_neutral"
+                        onclick={dispatchOpenCategoryFormEvent}>{addBtnLbl}</button>
+                </div>
+            </header>
+        </div>
+        <div class="slds-grid slds-wrap">
+            <template for:each={categoriesList} for:item="category">
+                <div key={category.id}
+                    class="slds-col slds-size--2-of-6 slds-small-size--2-of-6 slds-medium-size--3-of-12 slds-large-size--3-of-12">
+                    <div class="slds-m-vertical_x-small slds-m-horizontal_x-small slds-box">
+                        <c-category-card card-category={category} onaddexpense={openExpenseForm}>
+                        </c-category-card>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </article>
 </template>
