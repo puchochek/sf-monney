@@ -1,7 +1,13 @@
 import { LightningElement, api } from 'lwc';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import createCategory from '@salesforce/apex/ExpenseCategoryController.createCategory';
 
 const DEFAULT_CARD_ICON = 'utility:question';
+const TOAST_ERROR_VARIANT = 'error';
+const TOAST_SUCCESS_VARIANT = 'success';
+const TOAST_SAVE_ERROR_MESSAGE = 'Opps! Someting is wrong. Please, try again!';
+const TOAST_INPUT_ERROR_MESSAGE = 'Please check the input!';
+const TOAST_SUCCESS_MESSAGE = 'The record was saved.';
 export default class CategoryCreateEditForm extends LightningElement {
 
     headerIcon;
@@ -19,6 +25,7 @@ export default class CategoryCreateEditForm extends LightningElement {
     isIconsSetShown;
     categoryToEdit;
     monneyUserId;
+    upsertedCategories;
 
     @api
     get categoryToUpsert() {
@@ -52,15 +59,15 @@ export default class CategoryCreateEditForm extends LightningElement {
             createCategory({ "categories": JSON.stringify(bulkCategoriesJSON) })
                 .then(result => {
                     if (result) {
-                        //console.log('---> result', result);
-                        // this.upsertedExpenses = JSON.parse(result);
-                        // this.handleSuccessResult();
+                        this.upsertedCategories = JSON.parse(result);
+                        this.dispatchCloseCategoryFormEvent();
+                        this.showToast(TOAST_SUCCESS_MESSAGE, TOAST_SUCCESS_VARIANT)
                     } else {
-                        //this.handleErrorResult();
+                        this.showToast(TOAST_SAVE_ERROR_MESSAGE, TOAST_ERROR_VARIANT);
                     }
                 });
         } else {
-            //this.handleErrorResult(TOAST_INPUT_ERROR_MESSAGE);
+            this.showToast(TOAST_SAVE_ERROR_MESSAGE, TOAST_ERROR_VARIANT);
         }
     }
 
@@ -125,11 +132,17 @@ export default class CategoryCreateEditForm extends LightningElement {
         this.cardIcon = selectedIcon;
     }
 
-    dispatchCloseCategoryFormEvent() {
-        const upsertedCategories = [];
+    showToast(toastMessage, toastVariant) {
+        const toastEvent = new ShowToastEvent({
+            message: toastMessage,
+            variant: toastVariant,
+        });
+        this.dispatchEvent(toastEvent);
+    }
 
+    dispatchCloseCategoryFormEvent() {
         const closeCategoryForm = new CustomEvent("closecategoryform", {
-            detail: upsertedCategories
+            detail: this.upsertedCategories ? this.upsertedCategories : []
         });
 
         this.dispatchEvent(closeCategoryForm);

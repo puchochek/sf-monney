@@ -8,7 +8,7 @@ export default class CategoryCard extends LightningElement {
     viewAllBtnLbl = 'View all';
     addBtnLbl = 'Add';
     lastTransactionLbl = 'Last: ';
-    transactionsTotalLbl = 'Total (this month): ';
+    transactionsTotalLbl = 'This month total: ';
     lastTransactionValue;
     transactionsTotalValue;
 

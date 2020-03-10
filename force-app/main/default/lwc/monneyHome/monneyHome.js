@@ -3,10 +3,6 @@ import USER_ID from '@salesforce/user/Id';
 import monney from '@salesforce/resourceUrl/monney';
 import { loadStyle, loadScript } from 'lightning/platformResourceLoader';
 import getMonneyUser from '@salesforce/apex/MonneyHomeController.getCurrentMonneyUser';
-import { ShowToastEvent } from 'lightning/platformShowToastEvent';
-
-const TOAST_ERROR_VARIANT = 'error';
-const HOME_ERROR_MESSAGE = 'Opps! Someting is wrong. Please, try again!';
 
 export default class MonneyHome extends LightningElement {
     currentAppUser;
@@ -16,7 +12,6 @@ export default class MonneyHome extends LightningElement {
     isError;
     isExpenseCreateEditFormOpen;
     isCategoryCreateEditFormOpen;
-    upsertedExpenses;
     expenseCardsCategories;
     noExpenseCategories;
     categoryToUpsert;
@@ -27,14 +22,7 @@ export default class MonneyHome extends LightningElement {
     constructor() {
         super();
         if (USER_ID) {
-            this.getExistedMonneyUser()
-                .then(result => {
-                    if (result) {
-                        this.setHomeInitialData(result);
-                    } else {
-                        this.isError = true;
-                    }
-                })
+            this.getExistedMonneyUser();
         }
     }
 
@@ -45,15 +33,15 @@ export default class MonneyHome extends LightningElement {
     getExistedMonneyUser() {
         return getMonneyUser({ "userId": USER_ID })
             .then(result => {
-
+                this.setAppInitialData(result);
                 return result;
             })
             .catch(error => {
-                this.error = error;
+                this.isError = true;
             });
     }
 
-    setHomeInitialData(currentUser) {
+    setAppInitialData(currentUser) {
         this.currentAppUser = JSON.parse(currentUser);
         console.log('---> currentAppUser', this.currentAppUser);
         this.isDataLoaded = true;
@@ -84,10 +72,10 @@ export default class MonneyHome extends LightningElement {
 
     closeExpenseForm(event) {
         this.isExpenseCreateEditFormOpen = false;
-        this.upsertedExpenses = JSON.parse(JSON.stringify(event.detail));
+        const upsertedExpenses = JSON.parse(JSON.stringify(event.detail));
 
-        if (this.upsertedExpenses) {
-            this.updateCurrentAppUserExpenses();
+        if (upsertedExpenses) {
+            this.getExistedMonneyUser();
         }
     }
 
@@ -96,36 +84,12 @@ export default class MonneyHome extends LightningElement {
         this.categoryToUpsert = JSON.parse(JSON.stringify(event.detail));
     }
 
-    closeCategoryForm() {
+    closeCategoryForm(event) {
         this.isCategoryCreateEditFormOpen = false;
-    }
+        const upsertedCategories = JSON.parse(JSON.stringify(event.detail));
 
-    updateCurrentAppUserExpenses() {
-        this.currentAppUser.categoriesWithExpenses.forEach(category => {
-            const upsertedExpensesForTheCategory = this.upsertedExpenses.filter(expense => expense.category === category.id);
-            const existedCategoryExpenses = category.expenses;
-            this.updateExpensesForCurrentCategory(upsertedExpensesForTheCategory, existedCategoryExpenses)
-        });
-    }
-
-    updateExpensesForCurrentCategory(upsertedExpensesForTheCategory, existedCategoryExpenses) {
-        upsertedExpensesForTheCategory.forEach(upsertedExpense => {
-            const existedExpense = existedCategoryExpenses.find(expense => expense.id === upsertedExpense.id);
-
-            if (existedExpense) {
-                existedExpense = upsertedExpense;
-            } else {
-                existedCategoryExpenses.push(upsertedExpense);
-            }
-        });
-    }
-
-    //TODO change to success notification toast
-    showErrorMessage(toastMessage, toastVariant = TOAST_ERROR_VARIANT) {
-        const toastEvent = new ShowToastEvent({
-            message: toastMessage,
-            variant: toastVariant,
-        });
-        this.dispatchEvent(toastEvent);
+        if (upsertedCategories) {
+            this.getExistedMonneyUser();
+        }
     }
 }
