@@ -127,6 +127,7 @@ export default class CategoryCreateEditForm extends LightningElement {
 
     dispatchCloseCategoryFormEvent() {
         const upsertedCategories = [];
+
         const closeCategoryForm = new CustomEvent("closecategoryform", {
             detail: upsertedCategories
         });

@@ -22,7 +22,7 @@
 
             <div class="slds-m-top_small categories">
                 <template if:true={expenseCardsCategories}>
-                   <c-categories-list expenses-categories={expenseCardsCategories} onaddcategory={openCategoryForm}></c-categories-list>
+                   <c-categories-list expenses-categories={expenseCardsCategories} onaddcategory={openCategoryForm} onaddexpense={openExpenseForm}></c-categories-list>
                 </template>
                 <template if:true={noExpenseCategories}>
                     <c-no-expense-categories monney-user-id={monneyUserId} onaddcategory={openCategoryForm}></c-no-expense-categories>

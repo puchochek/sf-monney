@@ -22,10 +22,24 @@ export default class CategoriesList extends LightningElement {
         const categoryToUpsert = {
             monneyUserId: this.categoriesList[0].monneyUserId
         }; //temp
+
         const addCategoryEvent = new CustomEvent("addcategory", {
             detail: categoryToUpsert
         });
 
         this.dispatchEvent(addCategoryEvent);
+    }
+
+    passOpenExpenseFormEventToParent(event) {
+        const categoryToAddExpense = JSON.parse(JSON.stringify(event.detail));
+        this.dispatchOpenExpenseForm(categoryToAddExpense);
+    }
+
+    dispatchOpenExpenseForm(categoryToAddExpense) {
+        const addExenseEvent = new CustomEvent("addexpense", {
+            detail: categoryToAddExpense
+        });
+
+        this.dispatchEvent(addExenseEvent);
     }
 }
