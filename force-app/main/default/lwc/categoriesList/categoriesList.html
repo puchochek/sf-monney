@@ -18,7 +18,8 @@
                 <div key={category.id}
                     class="slds-col slds-size--2-of-6 slds-small-size--2-of-6 slds-medium-size--3-of-12 slds-large-size--3-of-12">
                     <div class="slds-m-vertical_x-small slds-m-horizontal_x-small slds-box">
-                        <c-category-card card-category={category} onaddexpense={passOpenExpenseFormEventToParent}>
+                        <c-category-card card-category={category} onaddexpense={passOpenExpenseFormEventToParent}
+                            onviewall={passViewCategoryExpensesEventToParent}>
                         </c-category-card>
                     </div>
                 </div>

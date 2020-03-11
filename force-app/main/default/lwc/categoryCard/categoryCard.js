@@ -45,13 +45,23 @@ export default class CategoryCard extends LightningElement {
         }, 0);
     }
 
-    passCategoryDataToHomeCmp() {
-        this.categoryToAddExpense = this.category;
+    dispatchAddExpenseEvent() {
+        const categoryToAddExpense = this.category;
 
         const addExpenseEvent = new CustomEvent("addexpense", {
-            detail: this.categoryToAddExpense
+            detail: categoryToAddExpense
         });
 
         this.dispatchEvent(addExpenseEvent);
+    }
+
+    dispatchViewCategoryExpensesEvent() {
+        const categoryToViewDetails = this.category;
+
+        const viewExpensesDetailsEvent = new CustomEvent("viewall", {
+            detail: categoryToViewDetails
+        });
+
+        this.dispatchEvent(viewExpensesDetailsEvent);
     }
 }

@@ -15,7 +15,6 @@ export default class CategoriesList extends LightningElement {
 
     setCategoriesList(expensesCategories) {
         this.categoriesList = JSON.parse(JSON.stringify(expensesCategories));
-        console.log('---> this.categoriesList', this.categoriesList);
     }
 
     dispatchOpenCategoryFormEvent() {
@@ -32,14 +31,27 @@ export default class CategoriesList extends LightningElement {
 
     passOpenExpenseFormEventToParent(event) {
         const categoryToAddExpense = JSON.parse(JSON.stringify(event.detail));
-        this.dispatchOpenExpenseForm(categoryToAddExpense);
+        this.dispatchOpenExpenseFormEvent(categoryToAddExpense);
     }
 
-    dispatchOpenExpenseForm(categoryToAddExpense) {
+    passViewCategoryExpensesEventToParent(event) {
+        const categoryToViewDetails = JSON.parse(JSON.stringify(event.detail));
+        this.dispatchViewCategoryExpensesEvent(categoryToViewDetails);
+    }
+
+    dispatchOpenExpenseFormEvent(categoryToAddExpense) {
         const addExenseEvent = new CustomEvent("addexpense", {
             detail: categoryToAddExpense
         });
 
         this.dispatchEvent(addExenseEvent);
+    }
+
+    dispatchViewCategoryExpensesEvent(categoryToViewDetails) {
+        const viewExpensesDetailsEvent = new CustomEvent("viewall", {
+            detail: categoryToViewDetails
+        });
+
+        this.dispatchEvent(viewExpensesDetailsEvent);
     }
 }

@@ -36,11 +36,12 @@
 
         <div class="slds-col slds-size--4-of-12 slds-p-vertical_small">
             <div class="slds-text-align_right slds-p-bottom_xx-small">
-                <button class="slds-button slds-button_neutral slds-button_stretch">{viewAllBtnLbl}</button>
+                <button class="slds-button slds-button_neutral slds-button_stretch"
+                    onclick={dispatchViewCategoryExpensesEvent}>{viewAllBtnLbl}</button>
             </div>
             <div class="slds-text-align_right slds-p-top_xx-small">
                 <button class="slds-button slds-button_neutral slds-button_stretch"
-                    onclick={passCategoryDataToHomeCmp}>{addBtnLbl}</button>
+                    onclick={dispatchAddExpenseEvent}>{addBtnLbl}</button>
             </div>
         </div>
     </div>

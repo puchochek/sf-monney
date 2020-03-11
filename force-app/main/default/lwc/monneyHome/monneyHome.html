@@ -22,24 +22,32 @@
 
             <div class="slds-m-top_small categories">
                 <template if:true={expenseCardsCategories}>
-                   <c-categories-list expenses-categories={expenseCardsCategories} onaddcategory={openCategoryForm} onaddexpense={openExpenseForm}></c-categories-list>
+                    <c-categories-list expenses-categories={expenseCardsCategories} onaddcategory={openCategoryForm}
+                        onaddexpense={openExpenseForm} onviewall={openViewCategoryExpensesCmp}></c-categories-list>
                 </template>
                 <template if:true={noExpenseCategories}>
-                    <c-no-expense-categories monney-user-id={monneyUserId} onaddcategory={openCategoryForm}></c-no-expense-categories>
+                    <c-no-expense-categories monney-user-id={monneyUserId} onaddcategory={openCategoryForm}>
+                    </c-no-expense-categories>
                 </template>
 
             </div>
         </template>
 
         <template if:true={isExpenseCreateEditFormOpen}>
-            <c-expense-create-edit-form category-to-add-expense={categoryToAddExpense} is-create={isExpenseCreateEditFormOpen}
-                oncloseexpenseform={closeExpenseForm}></c-expense-create-edit-form>
+            <c-expense-create-edit-form category-to-add-expense={categoryToAddExpense}
+                is-create={isExpenseCreateEditFormOpen} oncloseexpenseform={closeExpenseForm}>
+            </c-expense-create-edit-form>
         </template>
 
         <template if:true={isCategoryCreateEditFormOpen}>
-            <c-category-create-edit-form category-to-upsert={categoryToUpsert} onclosecategoryform={closeCategoryForm} ></c-category-create-edit-form>
+            <c-category-create-edit-form category-to-upsert={categoryToUpsert} onclosecategoryform={closeCategoryForm}>
+            </c-category-create-edit-form>
         </template>
 
     </div>
+
+    <template if:true={isCategoryExpensesListShown}>
+        <c-category-expenses-list category-to-view-details={categoryToViewDetails}></c-category-expenses-list>
+    </template>
 
 </template>

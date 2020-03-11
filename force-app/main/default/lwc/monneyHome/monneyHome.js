@@ -16,6 +16,8 @@ export default class MonneyHome extends LightningElement {
     noExpenseCategories;
     categoryToUpsert;
     monneyUserId;
+    isCategoryExpensesListShown;
+    categoryToViewDetails;
 
     @api categoryToAddExpense;
 
@@ -82,6 +84,11 @@ export default class MonneyHome extends LightningElement {
     openCategoryForm(event) {
         this.isCategoryCreateEditFormOpen = true;
         this.categoryToUpsert = JSON.parse(JSON.stringify(event.detail));
+    }
+
+    openViewCategoryExpensesCmp(event) {
+        this.isCategoryExpensesListShown = true;
+        this.categoryToViewDetails = JSON.parse(JSON.stringify(event.detail));
     }
 
     closeCategoryForm(event) {
