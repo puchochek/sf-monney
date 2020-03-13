@@ -2,8 +2,8 @@ public with sharing class MonneyHomeController {
 	@AuraEnabled
 	public static String getCurrentMonneyUser(Id userId) {
 		try {
-			Monney_User__c currentMonneyUser = getMonneyUserByUserId(userId);
-			List<Expense_Category__c> monneyUserCategoriesWithExpenses = getMonneyUserCategoriesWithExpenses(currentMonneyUser.Id);
+            Monney_User__c currentMonneyUser = getMonneyUserByUserId(userId);
+            List<Expense_Category__c> monneyUserCategoriesWithExpenses = getMonneyUserCategoriesWithExpenses(currentMonneyUser.Id);
 			MonneyUserData monneyUserData = buildMonneyUserData(currentMonneyUser, monneyUserCategoriesWithExpenses);
 
 			return JSON.serialize(monneyUserData);
@@ -27,7 +27,7 @@ public with sharing class MonneyHomeController {
 	}
 
 	public static List<Expense_Category__c> getMonneyUserCategoriesWithExpenses(Id monneyUserId) {
-		List<Expense_Category__c> userCategoriesWithExpenses = ExpenseCategoryDAO.getCategoriesWithExpensesByMonneyUserId(monneyUserId);
+		List<Expense_Category__c> userCategoriesWithExpenses = ExpenseCategoryDAO.getCategoriesWithThisMonthExpensesByMonneyUserId(monneyUserId);
 		List<Expense_Category__c> categoriesWithExpensesToBuildWrapper = new List<Expense_Category__c>();
 
 		if(userCategoriesWithExpenses.isEmpty()) {
@@ -36,6 +36,7 @@ public with sharing class MonneyHomeController {
 			incomeCategoryForNewUser.Description__c = 'Keeps your incomes data';
 			incomeCategoryForNewUser.Monney_User__c = monneyUserId;
 			incomeCategoryForNewUser.isIncome__c = true;
+			incomeCategoryForNewUser.Icon__c = 'custom:custom17';
 			categoriesWithExpensesToBuildWrapper = ExpenseCategoryDAO.createCategory(new List<Expense_Category__c>{ incomeCategoryForNewUser });
 		} else {
 			categoriesWithExpensesToBuildWrapper = userCategoriesWithExpenses;

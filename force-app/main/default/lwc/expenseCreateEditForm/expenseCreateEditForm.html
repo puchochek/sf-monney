@@ -1,0 +1,49 @@
+<template>
+    <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_small"
+        aria-labelledby="add-expense-form" aria-modal="true" aria-describedby="add-expense-form">
+        <div class="slds-modal__container">
+
+            <header class="slds-modal__header slds-list_horizontal">
+                <lightning-icon icon-name={category.icon} size="small" alternative-text="category" title="category">
+                </lightning-icon>
+                <h2 class="slds-modal__title slds-hyphenate slds-p-left_medium">{category.name}</h2>
+            </header>
+
+            <div class="slds-modal__content slds-p-around_medium">
+                <div class="slds-form slds-form_stacked">
+                    <div class="slds-form-element">
+                        <label class="slds-form-element__label" for="sum">
+                            <abbr class="slds-required" title="required">* </abbr>{sumLbl}</label>
+                        <div class="slds-form-element__control">
+                            <input type="text" id="sum" name="sum" class="slds-input" placeholder={sumPlaceholder}
+                                onkeyup={validateDecimalInput} required="" aria-describedby="sum-error">
+                            <div class="slds-form-element__help slds-text-color_error" id="sum-error"
+                                if:true={isSumMalformed}>{malformedSumInputMessage}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-form-element">
+                        <label class="slds-form-element__label" for="comment">{commentLbl}</label>
+                        <div class="slds-form-element__control">
+                            <textarea id="comment" name="comment" class="slds-textarea" placeholder={commentPlaceholder}></textarea>
+                        </div>
+                    </div>
+                    <div class="slds-form-element">
+                        <label class="slds-form-element__label" for="date">{dateLbl}</label>
+                        <div class="slds-form-element__control">
+                            <input type="date" id="date" name="date" class="slds-input" value={expenseDate} max={maxDate}>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <footer class="slds-modal__footer">
+                <button class="slds-button slds-button_neutral"
+                    onclick={dispatchCloseAddExpenseFormEvent}>{cancelBtn}</button>
+                <button class="slds-button slds-button_brand" onclick={saveExpense}>{saveBtn}</button>
+            </footer>
+
+        </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+</template>

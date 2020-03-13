@@ -1,12 +1,8 @@
 public with sharing class MonneyUserDAO {
 	public static List<Monney_User__c> getMonneyUserByUserId(Id userId) {
-		return getMonneyUserById(new Set<Id>{ userId });
-	}
-
-	public static List<Monney_User__c> getMonneyUserByUserId(Set<Id> userIds) {
 		List<Monney_User__c> monneyUser = [SELECT User__c, Last_Saving_Date__c, Balance_Limit__c, Id
 						   FROM Monney_User__c
-						   WHERE User__c IN :userIds];
+						   WHERE User__c = :userId];
 
 		return monneyUser;
 	}
@@ -14,7 +10,7 @@ public with sharing class MonneyUserDAO {
 	public static List<Monney_User__c> getMonneyUserById(Set<Id> monneyUserIds) {
 		List<Monney_User__c> monneyUser = [SELECT User__c, Last_Saving_Date__c, Balance_Limit__c, Id
 						   FROM Monney_User__c
-						   WHERE Id IN :monneyUserIds];
+					           WHERE Id IN :monneyUserIds];
 
 		return monneyUser;
 	}

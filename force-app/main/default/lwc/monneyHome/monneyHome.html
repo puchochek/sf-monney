@@ -12,8 +12,8 @@
         <template if:true={currentAppUser}>
             <div class="balance-panel-container slds-grid slds-gutters">
                 <div class="income-panel-container slds-col slds-size--4-of-12">
-                    <template if:true={incomeCard}>
-                        <c-category-card card-category={incomeCard} onaddexpense={openAddExpenseModal}>
+                    <template if:true={income}>
+                        <c-category-card card-category={income} onaddexpense={openAddExpenseForm}>
                         </c-category-card>
                     </template>
                 </div>
@@ -27,7 +27,8 @@
         </template>
 
         <template if:true={isNewExpenseRequired}>
-            <c-add-expense></c-add-expense>
+            <c-expense-create-edit-form category-to-add-expense={categoryToAddExpense} is-create={isNewExpenseRequired}
+                oncloseaddexpenseform={closeAddExpenseForm}></c-expense-create-edit-form>
         </template>
 
     </div>

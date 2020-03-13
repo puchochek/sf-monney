@@ -8,7 +8,7 @@ export default class CategoryCard extends LightningElement {
     viewAllBtnLbl = 'View all';
     addBtnLbl = 'Add';
     lastTransactionLbl = 'Last: ';
-    transactionsTotalLbl = 'Total: ';
+    transactionsTotalLbl = 'Total (this month): ';
     lastTransactionValue;
     transactionsTotalValue;
 
@@ -23,20 +23,26 @@ export default class CategoryCard extends LightningElement {
     @api categoryToAddExpense;
 
     setCategory(cardCategory) {
-        this.category = cardCategory.category;
-        this.icon = cardCategory.icon;
-        this.expenses = cardCategory.category.expenses;
-        console.log('---> this.category ', JSON.parse(JSON.stringify(this.category)));
+        this.category = cardCategory;
+        this.expenses = cardCategory.expenses;
         this.lastTransactionValue = this.expenses.length ? this.setLastTransactionValue() : 0;
         this.transactionsTotalValue = this.expenses.length ? this.setTransactionsTotalValue() : 0;
     }
 
     setLastTransactionValue() {
-
+        return `${this.expenses[0].sum} (${this.expenses[0].transactionDate})`;
     }
 
     setTransactionsTotalValue() {
+        const thisMonthExpensesTotal = this.countExpensesTotal();
 
+        return thisMonthExpensesTotal;
+    }
+
+    countExpensesTotal() {
+        return this.expenses.reduce((sum, expense) => {
+            return sum + expense.sum;
+        }, 0);
     }
 
     passCategoryDataToHomeCmp() {
