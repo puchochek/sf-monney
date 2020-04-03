@@ -18,11 +18,16 @@
 
             <footer class="slds-modal__footer">
                 <button class="slds-button slds-button_neutral"
-                    onclick={dispatchCloseAddExpenseFormEvent}>{cancelBtn}</button>
+                    onclick={dispatchCloseExpensesListEvent}>{cancelBtn}</button>
             </footer>
 
         </div>
     </section>
     <div class="slds-backdrop slds-backdrop_open"></div>
+
+    <template if:true={isExpenseCreateEditFormOpen}>
+        <c-expense-create-edit-form expense-category={category} expense-to-edit={expenseToEdit} oncloseexpenseform={closeExpenseForm}>
+        </c-expense-create-edit-form>
+    </template>
 
 </template>

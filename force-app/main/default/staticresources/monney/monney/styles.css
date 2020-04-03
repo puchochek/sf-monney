@@ -1,7 +1,12 @@
-header.flexipageHeader.slds-page-header.uiBlock.oneAnchorHeader { 
-    display: none;
+header.flexipageHeader.slds-page-header.uiBlock.oneAnchorHeader {
+	display: none;
 }
 .monney-home-container {
-    /* background-color: white;
-    height: 80vh; */
+	/*background-color: orange;*/
+
+	/*  height: 80vh; */
 }
+.slds-th__action .slds-th__action-button {
+	display: none;
+}
+/* .slds-dropdown { display: none; } */

@@ -99,4 +99,13 @@ export default class MonneyHome extends LightningElement {
             this.getExistedMonneyUser();
         }
     }
+
+    closeExpensesList(event) {
+        this.isCategoryExpensesListShown = false;
+        const wasExpenseChanged = JSON.parse(JSON.stringify(event.detail));
+
+        if (wasExpenseChanged) {
+            this.getExistedMonneyUser();
+        }
+    }
 }

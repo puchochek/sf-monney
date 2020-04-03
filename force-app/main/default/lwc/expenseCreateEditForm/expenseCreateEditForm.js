@@ -1,51 +1,63 @@
 import { LightningElement, api } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
-import save from '@salesforce/apex/ExpenseController.save';
+import { ExpenseService } from 'c/expenseDMLService';
+import labels from './expenseCreateEditFormLabels';
+import constants from './expenseCreateEditFormConstants';
 
-const TOAST_ERROR_VARIANT = 'error';
-const TOAST_SUCCESS_VARIANT = 'success';
-const TOAST_SAVE_ERROR_MESSAGE = 'Opps! Someting is wrong. Please, try again!';
-const TOAST_INPUT_ERROR_MESSAGE = 'Please check the input!';
-const TOAST_SUCCESS_MESSAGE = 'The record was saved.';
-const DECIMAL_NUMBER_REGEXP = '^[0-9]+([,.][0-9]+)?$';
-const MALFORMED_SUM_ERROR_MESSAGE = 'This field is required. Only positive numbers are allowed.';
 
 export default class ExpenseCreateEditForm extends LightningElement {
-    commentLbl = 'Comment';
-    sumLbl = 'Sum';
-    dateLbl = 'Date';
-    commentPlaceholder = 'Leave a comment for the transaction';
-    sumPlaceholder = 'Enter a sum';
-    cancelBtn = 'Cancel';
-    saveBtn = 'Save';
+    labels = labels;
+
     malformedSumInputMessage;
     expenseDate;
     maxDate;
     category;
+    expense;
     isSumMalformed;
     upsertedExpenses;
 
     @api
-    get categoryToAddExpense() {
-        return this._categoryToAddExpense;
+    get expenseCategory() {
+        return this._expenseCategory;
     }
-    set categoryToAddExpense(value) {
-        this.setCategory(value);
-    }
-
-    constructor() {
-        super();
-        this.setDateInputDefaults();
+    set expenseCategory(value) {
+        this.setCategoryDefaults(value);
     }
 
-    setCategory(categoryToAddExpense) {
-        this.category = categoryToAddExpense;
+    @api
+    get expenseToEdit() {
+        return this._expenseToEdit;
+    }
+    set expenseToEdit(value) {
+        this.setExpenseDefaults(value);
     }
 
-    setDateInputDefaults() {
+    renderedCallback() {
+        if (this.expense) {
+            this.setFormInputDefaults();
+        } else {
+            this.setDateDefaults();
+        }
+    }
+
+    setCategoryDefaults(categoryToAddExpense) {
+        this.category = JSON.parse(JSON.stringify(categoryToAddExpense));
+    }
+
+    setExpenseDefaults(expenseToEdit) {
+        this.expense = JSON.parse(JSON.stringify(expenseToEdit));
+    }
+
+    setDateDefaults() {
         const today = new Date();
         this.expenseDate = today.toISOString().substr(0, 10);
         this.maxDate = this.expenseDate;
+    }
+
+    setFormInputDefaults() {
+        this.dateInput.value = this.expense.transactionDate;
+        this.commentInput.value = this.expense.comment;
+        this.sumInput.value = this.expense.sum;
     }
 
     validateDecimalInput(event) {
@@ -54,41 +66,53 @@ export default class ExpenseCreateEditForm extends LightningElement {
 
         if (!isSumValid) {
             this.isSumMalformed = true;
-            this.malformedSumInputMessage = MALFORMED_SUM_ERROR_MESSAGE;
+            this.malformedSumInputMessage = constants.MALFORMED_SUM_ERROR_MESSAGE;
         } else {
             this.isSumMalformed = false;
         }
     }
 
     validateSum(sumInput) {
-        const sumRegexp = new RegExp(DECIMAL_NUMBER_REGEXP, 'g');
+        const sumRegexp = new RegExp(constants.DECIMAL_NUMBER_REGEXP, 'g');
         const validSumInput = sumInput.match(sumRegexp);
 
         return validSumInput ? true : false;
     }
 
-    saveExpense() {
+    handleSaveBtnClick() {
         const expenseToHandle = this.getExpenseToHandle();
-        console.log('---> expenseToHandle', expenseToHandle);
+        console.log('---> expenseToHandle*', expenseToHandle);
         if (expenseToHandle) {
-            save({ "expenseJSON": JSON.stringify(expenseToHandle) })
-                .then(result => {
-                    if (result) {
-                        this.upsertedExpenses = JSON.parse(result);
-                        this.handleSuccessResult();
-                    } else {
-                        this.handleErrorResult();
-                    }
-                });
+            if (this.expenseToEdit) {
+                ExpenseService.update(expenseToHandle)
+                    .then(result => {
+                        if (result) {
+                            this.upsertedExpenses = JSON.parse(result);
+                            this.handleSuccessResult();
+                        } else {
+                            this.handleErrorResult();
+                        }
+                    });
+            } else {
+                ExpenseService.save(expenseToHandle)
+                    .then(result => {
+                        if (result) {
+                            this.upsertedExpenses = JSON.parse(result);
+                            this.handleSuccessResult();
+                        } else {
+                            this.handleErrorResult();
+                        }
+                    });
+            }
         } else {
-            this.handleErrorResult(TOAST_INPUT_ERROR_MESSAGE);
+            this.handleErrorResult(constants.TOAST_INPUT_ERROR_MESSAGE);
         }
     }
 
     getExpenseToHandle() {
         let expenseToHandle;
         if (this.isSumMalformed) {
-            this.malformedSumInputMessage = MALFORMED_SUM_ERROR_MESSAGE;
+            this.malformedSumInputMessage = constants.MALFORMED_SUM_ERROR_MESSAGE;
         } else {
             const formattedUserInput = this.getFormattedUserInput();
             expenseToHandle = this.buildExpenseToHandle(formattedUserInput);
@@ -98,33 +122,24 @@ export default class ExpenseCreateEditForm extends LightningElement {
     }
 
     getFormattedUserInput() {
-        const sumInput = this.template.querySelector("[name='sum']");
-        const commentInput = this.template.querySelector("[name='comment']");
-        const dateInput = this.template.querySelector("[name='date']");
-
         const userInput = {
-            sum: this.formatSum(sumInput.value),
-            date: dateInput.value,
-            comment: commentInput.value
+            sum: this.formatSum(this.sumInput.value),
+            date: this.dateInput.value,
+            comment: this.commentInput.value
         };
 
         return userInput;
     }
 
     buildExpenseToHandle(userInput) {
-        //TODO In case of Edit existed Expense will be passed
-        const category = JSON.parse(JSON.stringify(this.category))
-
-        const expenseToHandle = {
-            id: null,
-            category: category.id,
+        return {
+            id: this.expenseToEdit ? this.expenseToEdit.id : null,
+            category: this.category.id,
             transactionDate: userInput.date,
             sum: userInput.sum,
             comment: userInput.comment,
-            isIncome: category.isIncome,
+            isIncome: this.category.isIncome,
         }
-
-        return expenseToHandle;
     }
 
     formatSum(sumInput) {
@@ -134,12 +149,12 @@ export default class ExpenseCreateEditForm extends LightningElement {
     }
 
     handleSuccessResult() {
-        this.showToast(TOAST_SUCCESS_MESSAGE, TOAST_SUCCESS_VARIANT);
+        this.showToast(constants.TOAST_SUCCESS_MESSAGE, constants.TOAST_SUCCESS_VARIANT);
         this.dispatchCloseAddExpenseFormEvent();
     }
 
-    handleErrorResult(toastError = TOAST_SAVE_ERROR_MESSAGE) {
-        this.showToast(toastError, TOAST_ERROR_VARIANT);
+    handleErrorResult(toastError = constants.TOAST_SAVE_ERROR_MESSAGE) {
+        this.showToast(toastError, constants.TOAST_ERROR_VARIANT);
     }
 
     showToast(toastMessage, toastVariant) {
@@ -156,5 +171,17 @@ export default class ExpenseCreateEditForm extends LightningElement {
         });
 
         this.dispatchEvent(closeAddExpenseForm);
+    }
+
+    get sumInput() {
+        return this.template.querySelector("[name='sum']");
+    }
+
+    get commentInput() {
+        return this.template.querySelector("[name='comment']")
+    }
+
+    get dateInput() {
+        return this.template.querySelector("[name='date']");
     }
 }

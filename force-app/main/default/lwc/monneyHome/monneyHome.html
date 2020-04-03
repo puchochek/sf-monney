@@ -10,7 +10,7 @@
 
                 <div class="income-panel-container slds-col slds-size--4-of-12">
                     <template if:true={income}>
-                        <c-category-card card-category={income} onaddexpense={openExpenseForm}>
+                        <c-category-card card-category={income} onaddexpense={openExpenseForm} onviewall={openViewCategoryExpensesCmp}>
                         </c-category-card>
                     </template>
                 </div>
@@ -34,8 +34,7 @@
         </template>
 
         <template if:true={isExpenseCreateEditFormOpen}>
-            <c-expense-create-edit-form category-to-add-expense={categoryToAddExpense}
-                is-create={isExpenseCreateEditFormOpen} oncloseexpenseform={closeExpenseForm}>
+            <c-expense-create-edit-form expense-category={categoryToAddExpense} oncloseexpenseform={closeExpenseForm}>
             </c-expense-create-edit-form>
         </template>
 
@@ -47,7 +46,7 @@
     </div>
 
     <template if:true={isCategoryExpensesListShown}>
-        <c-category-expenses-list category-to-view-details={categoryToViewDetails}></c-category-expenses-list>
+        <c-category-expenses-list category-to-view-details={categoryToViewDetails} oncloseexpenseslist={closeExpensesList}></c-category-expenses-list>
     </template>
 
 </template>

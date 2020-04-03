@@ -2,7 +2,7 @@
     <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_small"
         aria-labelledby="add-expense-form" aria-modal="true" aria-describedby="add-expense-form">
         <div class="slds-modal__container">
-
+{test}
             <header class="slds-modal__header slds-list_horizontal">
                 <lightning-icon icon-name={category.icon} size="small" alternative-text="category" title="category">
                 </lightning-icon>
@@ -13,9 +13,9 @@
                 <div class="slds-form slds-form_stacked">
                     <div class="slds-form-element">
                         <label class="slds-form-element__label" for="sum">
-                            <abbr class="slds-required" title="required">* </abbr>{sumLbl}</label>
+                            <abbr class="slds-required" title="required">* </abbr>{labels.sumLbl}</label>
                         <div class="slds-form-element__control">
-                            <input type="text" id="sum" name="sum" class="slds-input" placeholder={sumPlaceholder}
+                            <input type="text" id="sum" name="sum" class="slds-input" placeholder={labels.sumPlaceholder}
                                 onkeyup={validateDecimalInput} required="" aria-describedby="sum-error"
                                 autocomplete="off">
                             <div class="slds-form-element__help slds-text-color_error" id="sum-error"
@@ -24,14 +24,14 @@
                         </div>
                     </div>
                     <div class="slds-form-element">
-                        <label class="slds-form-element__label" for="comment">{commentLbl}</label>
+                        <label class="slds-form-element__label" for="comment">{labels.commentLbl}</label>
                         <div class="slds-form-element__control">
                             <textarea id="comment" name="comment" class="slds-textarea"
-                                placeholder={commentPlaceholder}></textarea>
+                                placeholder={labels.commentPlaceholder}></textarea>
                         </div>
                     </div>
                     <div class="slds-form-element">
-                        <label class="slds-form-element__label" for="date">{dateLbl}</label>
+                        <label class="slds-form-element__label" for="date">{labels.dateLbl}</label>
                         <div class="slds-form-element__control">
                             <input type="date" id="date" name="date" class="slds-input" value={expenseDate}
                                 max={maxDate}>
@@ -42,8 +42,8 @@
 
             <footer class="slds-modal__footer">
                 <button class="slds-button slds-button_neutral"
-                    onclick={dispatchCloseAddExpenseFormEvent}>{cancelBtn}</button>
-                <button class="slds-button slds-button_brand" onclick={saveExpense}>{saveBtn}</button>
+                    onclick={dispatchCloseAddExpenseFormEvent}>{labels.cancelBtn}</button>
+                <button class="slds-button slds-button_brand" onclick={handleSaveBtnClick}>{labels.saveBtn}</button>
             </footer>
 
         </div>
